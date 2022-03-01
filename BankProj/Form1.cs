@@ -47,10 +47,9 @@ namespace BankProj
                 button1.BackColor = Color.LightPink;
                 conn.Close();
                 button1.Text = "Connect to DB";
-               // dataGridView1.Rows.Clear();
+               
 
             }
-
 
         }
 
@@ -86,6 +85,32 @@ namespace BankProj
 
 
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var userid = textBox1.Text.Trim();
+            MySqlCommand cmd = new MySqlCommand($"select * from assets where user_id={userid}");
+            if (userid == String.Empty)
+            {
+                MessageBox.Show("Please enter User ID", "User ID error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if(cmd.ExecuteNonQuery()==0)
+            {
+                MessageBox.Show("Please enter a valid User ID", "User ID error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
