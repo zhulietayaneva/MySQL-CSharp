@@ -28,21 +28,33 @@ namespace BankProj
             {
                 try
                 {
-                    conn.Open();
-                    button1.BackColor = Color.LightGreen;
-                    button1.Text = $"Connected to DB {conn.Database}";
+                    OpenConnection();
                 }
                 catch (Exception)
                 {
-                    button1.Text = "Ne raboti";
+                    button1.Text = "Error";
                 }
             }
             else
             {
-                button1.BackColor = Color.LightPink;
-                conn.Close();
-                button1.Text = "Connect to DB";    
+                CloseConnection();
             }
+        }
+
+        
+
+        private void CloseConnection()
+        {
+            button1.BackColor = Color.LightPink;
+            conn.Close();
+            button1.Text = "Connect to DB";
+        }
+
+        private void OpenConnection()
+        {
+            conn.Open();
+            button1.BackColor = Color.LightGreen;
+            button1.Text = $"Connected to DB {conn.Database}";
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -68,10 +80,12 @@ namespace BankProj
         }
 
         private bool ReaderRows(MySqlCommand cmd)
-        {   
+        {
+            
             reader = cmd.ExecuteReader();
+            var res = reader.HasRows;
             reader.Close();
-            return reader.HasRows;
+            return res;
         }
         
         //----------------------------------------------
@@ -112,8 +126,9 @@ namespace BankProj
         {
             if (conn.State.ToString()!="Open")
             {
-                conn.Open();
+                OpenConnection();
             }
+            
             var userid = textBox1.Text.Trim();
             MySqlCommand cmd = new MySqlCommand($"select * from assets where user_id={userid}",conn);
 
@@ -121,7 +136,7 @@ namespace BankProj
             {
                 MessageBox.Show("Please enter User ID", "User ID error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if(ReaderRows(cmd))
+            else if(!ReaderRows(cmd))
             {
                 MessageBox.Show("Please enter a valid User ID", "User ID error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
