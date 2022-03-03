@@ -98,7 +98,7 @@ namespace BankProj
             this.label2.TabIndex = 6;
             this.label2.Text = "Enter user ID";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+           
             // 
             // button4
             // 
